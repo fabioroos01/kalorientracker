@@ -339,6 +339,10 @@ function initAndyGame() {
     }
     startBtn.addEventListener('click', startAndyGame);
     target.addEventListener('click', hitAndy);
+    const status = document.getElementById('andy-status');
+    if (status) {
+        status.innerText = 'Klick auf Start, um Andy zu jagen.';
+    }
     updateAndyDisplay();
 }
 
@@ -349,8 +353,14 @@ function startAndyGame() {
     andyGame.running = true;
     andyGame.score = 0;
     andyGame.timeLeft = 20;
-    document.getElementById('andy-status').innerText = 'Fang Andy so oft wie möglich! (20 Sekunden)';
-    document.getElementById('andy-start').disabled = true;
+    const status = document.getElementById('andy-status');
+    if (status) {
+        status.innerText = 'Fang Andy so oft wie möglich! (20 Sekunden)';
+    }
+    const startBtn = document.getElementById('andy-start');
+    if (startBtn) {
+        startBtn.disabled = true;
+    }
     moveAndyTarget();
     updateAndyDisplay();
 
@@ -377,6 +387,9 @@ function moveAndyTarget() {
     const target = document.getElementById('andy-target');
     if (!playground || !target) return;
 
+    // Sicherstellen, dass der Button sichtbar bleibt
+    target.style.display = 'inline-block';
+
     const areaWidth = playground.clientWidth;
     const areaHeight = playground.clientHeight;
     const targetWidth = target.offsetWidth;
@@ -399,8 +412,14 @@ function endAndyGame() {
         andyGame.best = andyGame.score;
     }
     updateAndyDisplay();
-    document.getElementById('andy-start').disabled = false;
-    document.getElementById('andy-status').innerText = `Fertig! Du hast Andy ${andyGame.score}x erwischt.`;
+    const startBtn = document.getElementById('andy-start');
+    if (startBtn) {
+        startBtn.disabled = false;
+    }
+    const status = document.getElementById('andy-status');
+    if (status) {
+        status.innerText = `Fertig! Du hast Andy ${andyGame.score}x erwischt.`;
+    }
 }
 
 function clearAndyTimers() {
