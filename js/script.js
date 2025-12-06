@@ -218,11 +218,11 @@ function parseJsonHelper(text) {
     }
 }
 
-window.onload = function () {
+window.addEventListener('load', function () {
     resetLebensmittelListe();
     zeigeKalorienZielCookie();
     initAndyGame();
-};
+});
 
 function aktualisiereAnzeige(kalorienZiel, summen = { kalorien: 0, fett: 0, eiweiss: 0, kohlenhydrate: 0 }) {
     let foodList = document.getElementById("food-list");
@@ -343,12 +343,13 @@ function initAndyGame() {
 }
 
 function startAndyGame() {
-    if (andyGame.running) return;
+    // Falls vorher noch Timer liefen, stoppen
+    clearAndyTimers();
 
     andyGame.running = true;
     andyGame.score = 0;
     andyGame.timeLeft = 20;
-    document.getElementById('andy-status').innerText = 'Fang Andy so oft wie möglich!';
+    document.getElementById('andy-status').innerText = 'Fang Andy so oft wie möglich! (20 Sekunden)';
     document.getElementById('andy-start').disabled = true;
     moveAndyTarget();
     updateAndyDisplay();
@@ -392,8 +393,7 @@ function moveAndyTarget() {
 }
 
 function endAndyGame() {
-    clearInterval(andyGame.moveTimer);
-    clearInterval(andyGame.countdownTimer);
+    clearAndyTimers();
     andyGame.running = false;
     if (andyGame.score > andyGame.best) {
         andyGame.best = andyGame.score;
@@ -401,6 +401,17 @@ function endAndyGame() {
     updateAndyDisplay();
     document.getElementById('andy-start').disabled = false;
     document.getElementById('andy-status').innerText = `Fertig! Du hast Andy ${andyGame.score}x erwischt.`;
+}
+
+function clearAndyTimers() {
+    if (andyGame.moveTimer) {
+        clearInterval(andyGame.moveTimer);
+        andyGame.moveTimer = null;
+    }
+    if (andyGame.countdownTimer) {
+        clearInterval(andyGame.countdownTimer);
+        andyGame.countdownTimer = null;
+    }
 }
 
 function updateAndyDisplay() {
