@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <title>Kalorienzähler</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/design.css">
+    <script src="js/script.js"></script>
+</head>
+
+<body id="top">
+    <!-- Navigation -->
+    <nav class="w3-bar w3-dark-gray w3-large">
+        <a class="w3-bar-item w3-button w3-hide-large w3-hide-medium w3-left" onclick="toggleNavbar()">☰</a>
+        <div id="large-navbar" class="w3-bar w3-hide-small">
+            <a href="#Info" class="w3-bar-item w3-button">Infos</a>
+            <a href="#Kalorieneingabe" class="w3-bar-item w3-button">Kalorieneingabe</a>
+            <a href="#Kalorienanzeige" class="w3-bar-item w3-button">Kalorienanzeige</a>
+        </div>
+        <div id="small-navbar" class="w3-bar-block w3-dark-gray w3-hide w3-hide-large w3-hide-medium">
+            <a href="#Info" onclick="closeNavbar()" class="w3-bar-item w3-button">Infos</a>
+            <a href="#Kalorieneingabe" onclick="closeNavbar()" class="w3-bar-item w3-button">Kalorieneingabe</a>
+            <a href="#Kalorienanzeige" onclick="closeNavbar()" class="w3-bar-item w3-button">Kalorienanzeige</a>
+        </div>
+    </nav>
+    <main>
+        <!-- Infos zur Anwendung -->
+        <section class="w3-padding-top-64" id="Info">
+            <h2 class="header">Ihr Kalorientracker</h2>
+            <section class="w3-container">
+                <article class="w3-row-padding">
+                    <div class="w3-col l6 w3-light-gray w3-padding">
+                        <p>
+                            <strong>Was macht ein Kalorientracker?</strong><br>
+                            Der Kalorienrechner ist ein praktisches Werkzeug, um Ihren täglichen Kalorienbedarf zu
+                            verfolgen und eine gesunde Ernährung zu unterstützen. Egal, ob Sie Gewicht verlieren,
+                            zunehmen oder Ihr aktuelles Gewicht halten möchten – dieser Rechner hilft Ihnen, Ihre Ziele
+                            zu erreichen, indem Sie Ihre Kalorienaufnahme effektiv verwalten. Die übersichtliche
+                            Darstellung und
+                            einfache Bedienung machen den Kalorienrechner zu einem unverzichtbaren Begleiter für Ihren
+                            Alltag.
+                        </p>
+                        <p>
+                            <strong>Wie benutze ich die Applikation?</strong><br>
+                            Um den Kalorienrechner optimal zu nutzen, geben Sie Ihr tägliches Kalorienziel in das
+                            entsprechende
+                            Eingabefeld ein. Anschliessend können Sie Lebensmittel hinzufügen, indem Sie deren Name,
+                            Menge und Einheit
+                            eingeben. Die Applikation berechnet automatisch die Nährwerte der eingegebenen Lebensmittel
+                            und zeigt Ihnen eine
+                            übersichtliche Zusammenfassung Ihrer Kalorienaufnahme im Verhältnis zu Ihrem Ziel. So
+                            behalten Sie Ihre Ernährung
+                            jederzeit im Blick und können bei Bedarf Anpassungen vornehmen.
+                        </p>
+                        <strong>Vorteile des Kalorienrechners:</strong>
+                        <ul>
+                            <li>Bewusstere Ernährung: Sie werden sich Ihrer täglichen Nährstoffaufnahme bewusster.</li>
+                            <li>Gesundheit fördern: Finden Sie die ideale Balance zwischen Energieaufnahme und
+                                -verbrauch.</li>
+                            <li>Ziele erreichen: Unterstützen Sie Ihre Diät- oder Fitnesspläne effektiv.</li>
+                            <li>Einfache Bedienung: Benutzerfreundliche Oberfläche für schnelle und präzise Ergebnisse.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="w3-col l6">
+                        <img class="w3-image w3-round-large" src="img/kalorientracken.jpg" alt="Ernährung Bild">
+                    </div>
+                </article>
+            </section>
+        </section>
+
+        <!-- Kalorieneingabe -->
+        <section id="Kalorieneingabe">
+            <h2 class="header">Kalorieneingabe</h2>
+            <form class="w3-container">
+                <fieldset class="custom-fieldset w3-center w3-container">
+                    <legend><strong>Kalorienziel eingeben</strong></legend>
+                    <div class="w3-row w3-margin-bottom w3-left-align">
+                        <div class="w3-col s12 m12 l12">
+                            <label for="kalorienZiel">Kalorienziel:</label>
+                            <input type="number" id="kalorienZiel" placeholder="z.B. 2000" min="1" step="1"
+                                oninput="validateKalorienZiel()" required>
+                            <span id="errorKalorienZiel" class="error"></span>
+                            <div id="cookieInfo" class="w3-margin-top"></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+            <form class="w3-container">
+                <fieldset class="custom-fieldset w3-center w3-container">
+                    <legend><strong>Lebensmittel und Menge</strong></legend>
+                    <div class="w3-row w3-margin-bottom w3-left-align">
+                        <div class="w3-col s12 m6 l6">
+                            <label for="lebensmittelName">Lebensmittelname in Englisch:</label>
+                            <input type="text" id="lebensmittelName" placeholder="Sprache: english"
+                                pattern="[a-zA-Z\s]+" title="Nur Buchstaben und Leerzeichen erlaubt"
+                                oninput="validateLebensmittelName()" required>
+                            <span id="errorLebensmittelName" class="error"></span>
+                        </div>
+                        <div class="w3-col s8 m4 l4">
+                            <label for="lebensmittelMenge">Menge angeben:</label>
+                            <input type="number" id="lebensmittelMenge" placeholder="z.B. 100 für 100g" min="1" step="1"
+                                oninput="validateLebensmittelMenge()" required>
+                            <span id="errorLebensmittelMenge" class="error"></span>
+                        </div>
+                        <div class="w3-col s4 m2 l2">
+                            <label for="einheit">Einheit:</label>
+                            <select id="einheit" oninput="validateEinheit()" required>
+                                <option value="" disabled selected>Wählen</option>
+                                <option value="g">g</option>
+                                <option value="ml">ml</option>
+                            </select>
+                            <span id="errorEinheit" class="error"></span>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            <div id="errorAPI" class="error w3-center" color: red;"></div>
+            <button class="customButton w3-green w3-margin-top w3-button"
+                onclick="lebensmittelHinzufuegen()">Lebensmittel hinzufügen</button>
+        </section>
+
+        <!-- Kalorienanzeige -->
+        <section id="Kalorienanzeige">
+            <h2 class="header">Kalorienanzeige</h2>
+            <canvas id="progressCanvas" width="200" height="200" style="display: block; margin: auto;"></canvas>
+            <section class="w3-container">
+                <fieldset class="custom-fieldset w3-center w3-container">
+                    <legend><strong>Kurzübersicht</strong></legend>
+                    <div id="result" class="result"></div>
+                </fieldset>
+            </section>
+            <section class="w3-container">
+                <fieldset class="custom-fieldset w3-center">
+                    <legend><strong>Lebensmittelliste</strong></legend>
+                    <ul class="food-list" id="food-list"></ul>
+                </fieldset>
+            </section>
+            <button class="customButton w3-red w3-margin-top w3-button"
+                onclick="resetLebensmittelListe()">Lebensmittelliste zurücksetzen</button>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <button class="customButton w3-green w3-margin-top w3-margin-bottom w3-button"
+            onclick="window.location.href='#top'">Zurück nach oben</button>
+    </footer>
+</body>
+
+</html>
