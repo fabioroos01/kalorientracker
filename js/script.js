@@ -221,6 +221,7 @@ function parseJsonHelper(text) {
 window.onload = function () {
     resetLebensmittelListe();
     zeigeKalorienZielCookie();
+    initAndyGame();
 };
 
 function aktualisiereAnzeige(kalorienZiel, summen = { kalorien: 0, fett: 0, eiweiss: 0, kohlenhydrate: 0 }) {
@@ -318,4 +319,96 @@ function zeichneFortschrittskreis(kalorien = 0, kalorienZiel = 1) {
     ctx.strokeStyle = '#999999';
     ctx.lineWidth = 2;
     ctx.stroke();
+}
+
+// Andy-Reaktionstest
+let andyGame = {
+    score: 0,
+    best: 0,
+    timeLeft: 20,
+    running: false,
+    moveTimer: null,
+    countdownTimer: null
+};
+
+function initAndyGame() {
+    const startBtn = document.getElementById('andy-start');
+    const target = document.getElementById('andy-target');
+    if (!startBtn || !target) {
+        return;
+    }
+    startBtn.addEventListener('click', startAndyGame);
+    target.addEventListener('click', hitAndy);
+    updateAndyDisplay();
+}
+
+function startAndyGame() {
+    if (andyGame.running) return;
+
+    andyGame.running = true;
+    andyGame.score = 0;
+    andyGame.timeLeft = 20;
+    document.getElementById('andy-status').innerText = 'Fang Andy so oft wie möglich!';
+    document.getElementById('andy-start').disabled = true;
+    moveAndyTarget();
+    updateAndyDisplay();
+
+    andyGame.countdownTimer = setInterval(() => {
+        andyGame.timeLeft -= 1;
+        updateAndyDisplay();
+        if (andyGame.timeLeft <= 0) {
+            endAndyGame();
+        }
+    }, 1000);
+
+    andyGame.moveTimer = setInterval(moveAndyTarget, 900);
+}
+
+function hitAndy() {
+    if (!andyGame.running) return;
+    andyGame.score += 1;
+    updateAndyDisplay();
+    moveAndyTarget();
+}
+
+function moveAndyTarget() {
+    const playground = document.getElementById('andy-playground');
+    const target = document.getElementById('andy-target');
+    if (!playground || !target) return;
+
+    const areaWidth = playground.clientWidth;
+    const areaHeight = playground.clientHeight;
+    const targetWidth = target.offsetWidth;
+    const targetHeight = target.offsetHeight;
+
+    const maxLeft = Math.max(0, areaWidth - targetWidth);
+    const maxTop = Math.max(0, areaHeight - targetHeight);
+
+    const newLeft = Math.floor(Math.random() * maxLeft);
+    const newTop = Math.floor(Math.random() * maxTop);
+
+    target.style.left = `${newLeft}px`;
+    target.style.top = `${newTop}px`;
+}
+
+function endAndyGame() {
+    clearInterval(andyGame.moveTimer);
+    clearInterval(andyGame.countdownTimer);
+    andyGame.running = false;
+    if (andyGame.score > andyGame.best) {
+        andyGame.best = andyGame.score;
+    }
+    updateAndyDisplay();
+    document.getElementById('andy-start').disabled = false;
+    document.getElementById('andy-status').innerText = `Fertig! Du hast Andy ${andyGame.score}x erwischt.`;
+}
+
+function updateAndyDisplay() {
+    const scoreEl = document.getElementById('andy-score');
+    const timeEl = document.getElementById('andy-time');
+    const bestEl = document.getElementById('andy-best');
+
+    if (scoreEl) scoreEl.innerText = andyGame.score;
+    if (timeEl) timeEl.innerText = Math.max(0, andyGame.timeLeft);
+    if (bestEl) bestEl.innerText = andyGame.best;
 }
